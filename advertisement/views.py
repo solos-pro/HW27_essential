@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
-from advertisement.models import Advertisement, Characteristics
+from advertisement.models import Advertisement, Category
+import json
 
 
 class AdDetailView(DetailView):
@@ -29,9 +30,33 @@ class AdsView(View):
             )
         return JsonResponse(response, status=200, safe=False)
 
+    def post(self, request):
+        ad_data = json.loads(request.body)
+
+        ad = Advertisement.objects.create(
+            name = ad_data["name"],
+            author = ad_data["author"],
+            price = ad_data["price"],
+            description = ad_data["description"],
+            address = ad_data["address"],
+            is_published = ad_data["is_published"],
+        )
+
+
+        return JsonResponse(
+            {
+                "id": ad.pk,
+                "name": ad.name,
+                "author": ad.author,
+                "description": ad.description,
+                "address": ad.address,
+                "is_published": ad.is_published,
+            }
+        )
+
 
 class CatDetailView(DetailView):
-    model = Characteristics
+    model = Category
 
     def get(self, request, *args, **kwargs):
         cat = self.get_object()
@@ -46,7 +71,7 @@ class CatDetailView(DetailView):
 class CatView(View):
     def get(self, request):
 
-        cats = Characteristics.objects.all()
+        cats = Category.objects.all()
 
         response = []
         for cat in cats:
@@ -57,3 +82,17 @@ class CatView(View):
                 }
             )
         return JsonResponse(response, status=200, safe=False)
+
+    def post(self, request):
+        category_data = json.loads(request.body)
+
+        category = Category.objects.create(
+            name=category_data["name"],
+        )
+
+        return JsonResponse(
+            {
+                "id": category.id,
+                "name": category.name,
+            }, status=200, safe=False
+        )
