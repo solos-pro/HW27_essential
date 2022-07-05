@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView
-from advertisement.models import Advertisement
+from advertisement.models import Advertisement, Characteristics
 
 
 class AdDetailView(DetailView):
@@ -25,6 +25,35 @@ class AdsView(View):
                     "description": ad.description,
                     "address": ad.address,
                     "is_published": ad.is_published,
+                }
+            )
+        return JsonResponse(response, status=200, safe=False)
+
+
+class CatDetailView(DetailView):
+    model = Characteristics
+
+    def get(self, request, *args, **kwargs):
+        cat = self.get_object()
+        return JsonResponse(
+            {
+                "id": cat.id,
+                "name": cat.name,
+            }, status=200, safe=False
+        )
+
+
+class CatView(View):
+    def get(self, request):
+
+        cats = Characteristics.objects.all()
+
+        response = []
+        for cat in cats:
+            response.append(
+                {
+                    "id": cat.id,
+                    "name": cat.name,
                 }
             )
         return JsonResponse(response, status=200, safe=False)
