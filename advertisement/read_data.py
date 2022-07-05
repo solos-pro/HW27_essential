@@ -1,26 +1,32 @@
 import re
 
+with open('../ads.csv') as f:
+    pre_ = []
+    while True:
+        try:
+            line = str(next(f))
+            red_line = []
+            p = re.compile(r"\S,\S")
+            # p = re.compile(",")
+            old = 0
+            n = 0
+            for m in p.finditer(line):
+                n += 1
+                red_line.append(line[old:m.start() + 1])
+                # print(len(red_line))
+                old = m.start() + 2
+                if len(red_line) >= 7:
+                    pre_ = red_line[:7]
+                    print(pre_)
+                    print(red_line)
+                    del red_line[0:7]
 
-# with open('../ads.csv') as f:
-#     while True:
-#         try:
-#             line = next(f)
-#
-#         # for item in line:
-#         #     print(line)
-#         #     result: int = re.search(r"\S,П", line)
-#         #     print(result)
-#                 # print(line[match.start()+1:match.end()-1)])
-#             # res = re.finditer(r"\S,\S", line)
-#             # print(line[res.start()+1:res.end()-1])
-#             # print(list(res))
-#             print(re.search(",", re.split(r"\S,\S", line)))
-#         except StopIteration:
-#             break
+        except StopIteration:
+            break
 #             # print(line)
 # """"""
 
-line = """1,"Сибирская котята, 3 месяца",Павел,2500,"Продаю сибирских котят, возвраст 3 месяца."""
+# line = """1,"Сибирская котята, 3 месяца",Павел,2500,"Продаю сибирских котят, возвраст 3 месяца."""
 # # for n in
 # result = re.search(r"\S,П", line)
 # print(result)
@@ -32,11 +38,15 @@ line = """1,"Сибирская котята, 3 месяца",Павел,2500,"�
 # result = re.finditer(r"\S,\S", line)
 # print(list(result))
 
-massiv = []
-p = re.compile("\S,\S")
-old = 0
-for m in p.finditer(line):
-    massiv.append(line[old:m.start()+1])
-    old = m.start()+2
-    # print(m.start()+0, m.group())
-print(massiv)
+# massiv, pre = [], []
+# p = re.compile("\S,\S")
+# old = 0
+# n = 0
+# for m in p.finditer(line):
+#     n += 1
+#     massiv.append(line[old:m.start()+1])
+#     old = m.start()+2
+#     if len(massiv) >= 7:
+#         pre = massiv[:7]
+#     # print(m.start()+0, m.group())
+# print(massiv)
