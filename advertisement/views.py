@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 from advertisement.models import Advertisement, Category
 import json
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AdDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         return JsonResponse(200, {"status": "ok"})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class AdsView(View):
     def get(self, request):
         ads = Advertisement.objects.all()
@@ -55,6 +59,24 @@ class AdsView(View):
         )
 
 
+@method_decorator(csrf_exempt, name="dispatch")
+class AdsDetailView(DetailView):
+    model = Advertisement
+
+    def get(self, request, *args, **kwargs):
+        ad = self.get_object()
+        return JsonResponse(
+            {
+                "id": ad.id,
+                "name": ad.name,
+                "author": ad.author,
+                "description": ad.description,
+                "address": ad.address,
+                "is_published": ad.is_published,
+            }, status=200, safe=False)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
 class CatDetailView(DetailView):
     model = Category
 
@@ -68,6 +90,7 @@ class CatDetailView(DetailView):
         )
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CatView(View):
     def get(self, request):
 
