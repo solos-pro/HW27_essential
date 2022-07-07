@@ -1,6 +1,6 @@
 import re
 
-with open('../ads.csv') as f:
+with open('ads.csv') as f:
     pre_ = []
     while True:
         try:

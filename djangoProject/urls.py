@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from advertisement.views import AdDetailView, AdsView, CatView, CatDetailView
-from advertisement import views
+from advertisement.views import AdDetailView, AdsView, CatView, CatDetailView, InitDB
+# from advertisement import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path ('cat/', views.CatView.as_view () ),
-    path ('cat/<int:pk>', views.CatDetailView.as_view () ),
-    path ('ad/', views.AdsView.as_view () ),
-    path ('ad/<int:pk>', views.AdDetailView.as_view () ),
+    path ('cat/', CatView.as_view()),
+    path ('add/', InitDB.as_view()),
+    path ('cat/<int:pk>', CatDetailView.as_view()),
+    path ('ad/', AdsView.as_view()),
+    path ('ad/<int:pk>', AdDetailView.as_view()),
 ]

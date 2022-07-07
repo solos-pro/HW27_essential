@@ -1,4 +1,4 @@
-from django.shortcuts import render
+import pandas
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -6,6 +6,41 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 from advertisement.models import Advertisement, Category
 import json
+import os
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+FILE1: str = os.path.join(BASE_DIR, 'ads.csv')
+FILE2: str = os.path.join(BASE_DIR, 'categories.csv')
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InitDB(View):
+    def get(self, request):
+
+        data_ads = pandas.read_csv(FILE1, sep=",").to_dict()
+        i = 0
+
+        while max(data_ads['Id'].keys()) >= i:
+            Advertisement.objects.create(
+                name=data_ads["name"][i],
+                author=data_ads["author"][i],
+                price=data_ads["price"][i],
+                description=data_ads["description"][i],
+                address=data_ads["address"][i],
+                is_published=data_ads["is_published"][i],
+            )
+            i += 1
+
+        data_categories = pandas.read_csv(FILE2, sep=",").to_dict()
+        i = 0
+
+        while max(data_categories['id'].keys()) >= i:
+            Category.objects.create(
+                name=data_categories["name"][i],
+            )
+            i += 1
+
+        return JsonResponse("data from ads.csv & categories.csv is added", safe=False, status=200)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -60,7 +95,7 @@ class AdsView(View):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-class AdsDetailView(DetailView):
+class AdDetailView(DetailView):
     model = Advertisement
 
     def get(self, request, *args, **kwargs):
