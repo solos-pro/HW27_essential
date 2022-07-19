@@ -1,3 +1,8 @@
 from django.contrib import admin
+from advertisement.models import Advertisement, Category
 
-# Register your models here.
+admin.site.register(Advertisement)
+admin.site.register(Category)
+
+
+
