@@ -7,6 +7,9 @@ authors = ["solos-pro <sergey-solonichenko@rambler.ru>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 psycopg2 = "^2.9.3"
+Pillow = "^9.2.0"
+Django = "^4.0.6"
+pandas = "^1.4.3"
 
 [tool.poetry.dev-dependencies]
 
