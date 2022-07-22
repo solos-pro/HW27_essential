@@ -28,6 +28,7 @@ class InitDB(View):
                 description=data_ads["description"][i],
                 address=data_ads["address"][i],
                 is_published=data_ads["is_published"][i],
+                image=data_ads["image"][i],
             )
             i += 1
 
@@ -65,6 +66,7 @@ class AdsView(View):
                     "description": ad.description,
                     "address": ad.address,
                     "is_published": ad.is_published,
+                    "image": ad.image.url if ad.image else None
                 }
             )
         return JsonResponse(response, status=200, safe=False)
