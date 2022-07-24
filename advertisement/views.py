@@ -119,12 +119,45 @@ class AdsCreateView(CreateView):
             price=ads_data["price"],
             description=ads_data["description"],
             is_published=ads_data["is_published"],
-            # image=request.FILES["image"],
             image=ads_data["image"],
             category_id=ads_data["category_id"],
         )
 
         ads.author = get_object_or_404(User, pk=ads_data["author_id"])
+
+        return JsonResponse(
+            {
+                "id": ads.id,
+                "name": ads.name,
+                "author": ads.author_id,
+                "price": ads.price,
+                "description": ads.description,
+                "category": ads.category_id,
+                "image": ads.image.url if ads.image else None,
+                "is_published": ads.is_published,
+            }
+        )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdUpdateView(UpdateView):
+    model = Advertisement
+    fields = ["name", "author", "price", "description", "category", "image", "is_published"]
+
+    def post(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+
+        ads_data = json.loads(request.body)
+
+        ads = self.object
+        ads.name = ads_data["name"]
+        ads.author_id = int(ads_data["author_id"])
+        ads.price = ads_data["price"]
+        ads.description = ads_data["description"]
+        ads.is_published = ads_data["is_published"]
+        ads.image = ads_data["image"]
+        ads.category_id = int(ads_data["category_id"])
+        ads.save()
 
         return JsonResponse(
             {
