@@ -1,5 +1,8 @@
 import pandas as pandas
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -7,6 +10,8 @@ from django.views.generic import DetailView, ListView, CreateView, UpdateView, D
 from advertisement.models import Advertisement, Category
 import json
 import os
+
+from djangoProject import settings
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 FILE1: str = os.path.join(BASE_DIR, 'ads.csv')
@@ -51,49 +56,34 @@ class AdDetailView(DetailView):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class AdsView(View):
-    def get(self, request):
-        ads = Advertisement.objects.all()
+class AdsView(ListView):
+    model = Advertisement
 
-        response = []
-        for ad in ads:
-            response.append(
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+
+        self.object_list = self.object_list.order_by("price")
+
+        paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        advertisements = []
+        for ad in page_obj:
+            advertisements.append(
                 {
                     "id": ad.id,
                     "name": ad.name,
-                    "author": ad.author,
-                    "price": ad.price,
-                    "description": ad.description,
-                    "address": ad.address,
-                    "is_published": ad.is_published,
-                    "image": ad.image.url if ad.image else None
+                    "author": ad.author_id,
                 }
             )
+
+        response = {
+            "items": advertisements,
+            "num_pages": paginator.num_pages,
+            "total": paginator.count,
+        }
         return JsonResponse(response, status=200, safe=False)
-
-    def post(self, request):
-        ad_data = json.loads(request.body)
-
-        ad = Advertisement.objects.create(
-            name = ad_data["name"],
-            author = ad_data["author"],
-            price = ad_data["price"],
-            description = ad_data["description"],
-            address = ad_data["address"],
-            is_published = ad_data["is_published"],
-        )
-
-
-        return JsonResponse(
-            {
-                "id": ad.pk,
-                "name": ad.name,
-                "author": ad.author,
-                "description": ad.description,
-                "address": ad.address,
-                "is_published": ad.is_published,
-            }
-        )
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -106,13 +96,51 @@ class AdDetailView(DetailView):
             {
                 "id": ad.id,
                 "name": ad.name,
-                "author": ad.author,
+                "author": ad.author_id,
+                "price": ad.price,
                 "description": ad.description,
-                "address": ad.address,
+                "category": ad.category_id,
+                "image": ad.image.url if ad.image else None,
                 "is_published": ad.is_published,
             }, status=200, safe=False)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
+class AdsCreateView(CreateView):
+    model = Advertisement
+    fields = ["name", "author_id", "price", "description", "category_id", "image", "is_published"]
+
+    def post(self, request, *args, **kwargs):
+        ads_data = json.loads(request.body)
+
+        ads = Advertisement.objects.create(
+            name=ads_data["name"],
+            author_id=ads_data["author_id"],
+            price=ads_data["price"],
+            description=ads_data["description"],
+            is_published=ads_data["is_published"],
+            # image=request.FILES["image"],
+            image=ads_data["image"],
+            category_id=ads_data["category_id"],
+        )
+
+        ads.author = get_object_or_404(User, pk=ads_data["author_id"])
+
+        return JsonResponse(
+            {
+                "id": ads.id,
+                "name": ads.name,
+                "author": ads.author_id,
+                "price": ads.price,
+                "description": ads.description,
+                "category": ads.category_id,
+                "image": ads.image.url if ads.image else None,
+                "is_published": ads.is_published,
+            }
+        )
+
+
+# --------------------------------------------------------------------------------------
 @method_decorator(csrf_exempt, name='dispatch')
 class CatListView(ListView):
     model = Category
