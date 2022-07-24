@@ -1,5 +1,6 @@
 import pandas as pandas
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from users.models import User
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -106,12 +107,15 @@ class AdDetailView(DetailView):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class AdsCreateView(CreateView):
+class AdCreateView(CreateView):
     model = Advertisement
     fields = ["name", "author_id", "price", "description", "category_id", "image", "is_published"]
 
     def post(self, request, *args, **kwargs):
         ads_data = json.loads(request.body)
+
+        author = get_object_or_404(User, pk=ads_data["author_id"])
+        category = get_object_or_404(Category, ads_data["category_id"])
 
         ads = Advertisement.objects.create(
             name=ads_data["name"],
@@ -123,7 +127,6 @@ class AdsCreateView(CreateView):
             category_id=ads_data["category_id"],
         )
 
-        ads.author = get_object_or_404(User, pk=ads_data["author_id"])
 
         return JsonResponse(
             {
@@ -171,6 +174,41 @@ class AdUpdateView(UpdateView):
                 "is_published": ads.is_published,
             }
         )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AdDeleteView(DeleteView):
+    model = Advertisement
+    success_url = "delete/"
+
+    def delete(self, request, *args, **kwargs):
+        super().delete(request, *args, **kwargs)
+
+        return JsonResponse({"status": "deleted"}, status=200)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ImageUpdateView(UpdateView):
+    model = Advertisement
+    fields = ["image"]
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        self.object.image = request.FILES("image")
+        self.object.save()
+
+        return JsonResponse({
+            "id":  self.object.id,
+            "name":  self.object.name,
+            "author_id":  self.object.author_id,
+            "author":  list(map(str, self.object.author.all())),
+            "price":  self.object.price,
+            "description":  self.object.description,
+            "is_published":  self.object.is_published,
+            "category_id":  self.object.category,
+            "image": self.object.image.url if self.object.image else None,
+        }, status=200, safe=False)
 
 
 # --------------------------------------------------------------------------------------

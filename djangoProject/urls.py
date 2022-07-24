@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from advertisement.views import AdDetailView, AdsView, CatListView, CatDetailView, InitDB
 # from advertisement import views
 
@@ -27,4 +27,5 @@ urlpatterns = [
     path ('cat/<int:pk>', CatDetailView.as_view()),
     path ('ad/', AdsView.as_view()),
     path ('ad/<int:pk>', AdDetailView.as_view()),
+    path('users/', include('users.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
