@@ -1,6 +1,6 @@
 import pandas as pandas
 # from django.contrib.auth.models import User
-from users.models import User
+from users.models import User, Location
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -15,19 +15,56 @@ import os
 from djangoProject import settings
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-FILE1: str = os.path.join(BASE_DIR, 'ads.csv')
-FILE2: str = os.path.join(BASE_DIR, 'categories.csv')
+FILE1: str = os.path.join(BASE_DIR, 'new_location.csv')
+FILE2: str = os.path.join(BASE_DIR, 'new_categories.csv')
+FILE3: str = os.path.join(BASE_DIR, 'new_user.csv')
+FILE4: str = os.path.join(BASE_DIR, 'new_ads.csv')
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class InitDB(View):
     def get(self, request):
 
-        data_ads = pandas.read_csv(FILE1, sep=",").to_dict()
+        data_location = pandas.read_csv(FILE1, sep=",").to_dict()
+        i = 0
+
+        while max(data_location['id'].keys()) >= i:
+            Location.objects.update_or_create(
+                name=data_location["name"][i],
+                lat=data_location["lat"][i],
+                lng=data_location["lng"][i],
+            )
+            i += 1
+
+        data_categories = pandas.read_csv(FILE2, sep=",").to_dict()
+        i = 0
+
+        while max(data_categories['id'].keys()) >= i:
+            Category.objects.update_or_create(
+                name=data_categories["name"][i],
+            )
+            i += 1
+
+        data_user = pandas.read_csv(FILE3, sep=",").to_dict()
+        i = 0
+
+        while max(data_user['id'].keys()) >= i:
+            User.objects.update_or_create(
+                first_name=data_user["first_name"][i],
+                last_name=data_user["last_name"][i],
+                username=data_user["username"][i],
+                password=data_user["password"][i],
+                role=data_user["role"][i],
+                age=data_user["age"][i],
+                locations=data_user["location_id"][i],
+            )
+            i += 1
+
+        data_ads = pandas.read_csv(FILE4, sep=",").to_dict()
         i = 0
 
         while max(data_ads['Id'].keys()) >= i:
-            Advertisement.objects.create(
+            Advertisement.objects.update_or_create(
                 name=data_ads["name"][i],
                 author=data_ads["author"][i],
                 price=data_ads["price"][i],
@@ -38,16 +75,8 @@ class InitDB(View):
             )
             i += 1
 
-        data_categories = pandas.read_csv(FILE2, sep=",").to_dict()
-        i = 0
 
-        while max(data_categories['id'].keys()) >= i:
-            Category.objects.create(
-                name=data_categories["name"][i],
-            )
-            i += 1
-
-        return JsonResponse("data from ads.csv & categories.csv is added", safe=False, status=200)
+        return JsonResponse("data from ads.csv & new_categories.csv is added", safe=False, status=200)
 
 
 @method_decorator(csrf_exempt, name='dispatch')

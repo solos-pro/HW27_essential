@@ -22,15 +22,15 @@ class User(models.Model):
     ]
 
     first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=30, null=True, blank=True)
+    last_name = models.CharField(max_length=30, null=True)
     username = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
     role = models.CharField(max_length=9, choices=ROLES, default="member")
-    age = models.PositiveSmallIntegerField()
-    locations = models.ManyToManyField(Location)
+    age = models.PositiveSmallIntegerField(null=True)
+    locations = models.ManyToManyField(Location, null=True)
 
     def __str__(self):
-        return self.name
+        return self.username
 
     class Meta:
         verbose_name = "Пользователь"
