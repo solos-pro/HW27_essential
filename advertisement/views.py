@@ -22,7 +22,7 @@ FILE4: str = os.path.join(BASE_DIR, 'new_ads.csv')
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class InitDB(View):
+class InitLocations(View):
     def get(self, request):
 
         data_location = pandas.read_csv(FILE1, sep=",").to_dict()
@@ -36,6 +36,13 @@ class InitDB(View):
             )
             i += 1
 
+        return JsonResponse("data_location is added", safe=False, status=200)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InitCategories(View):
+    def get(self, request):
+
         data_categories = pandas.read_csv(FILE2, sep=",").to_dict()
         i = 0
 
@@ -44,6 +51,13 @@ class InitDB(View):
                 name=data_categories["name"][i],
             )
             i += 1
+
+        return JsonResponse("data_categories is added", safe=False, status=200)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InitUsers(View):
+    def get(self, request):
 
         data_user = pandas.read_csv(FILE3, sep=",").to_dict()
         i = 0
@@ -56,9 +70,16 @@ class InitDB(View):
                 password=data_user["password"][i],
                 role=data_user["role"][i],
                 age=data_user["age"][i],
-                locations=data_user["location_id"][i],
+                locations_id=data_user["location_id"][i],
             )
             i += 1
+
+        return JsonResponse("data_user is added", safe=False, status=200)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InitAdvertisement(View):
+    def get(self, request):
 
         data_ads = pandas.read_csv(FILE4, sep=",").to_dict()
         i = 0
@@ -66,17 +87,17 @@ class InitDB(View):
         while max(data_ads['Id'].keys()) >= i:
             Advertisement.objects.update_or_create(
                 name=data_ads["name"][i],
-                author=data_ads["author"][i],
+                author_id=data_ads["author_id"][i],
                 price=data_ads["price"][i],
                 description=data_ads["description"][i],
-                address=data_ads["address"][i],
+                # address=data_ads["address"][i],
                 is_published=data_ads["is_published"][i],
                 image=data_ads["image"][i],
+                category_id=data_ads["category_id"][i],
             )
             i += 1
 
-
-        return JsonResponse("data from ads.csv & new_categories.csv is added", safe=False, status=200)
+        return JsonResponse("data_ads is added", safe=False, status=200)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -104,7 +125,7 @@ class AdsView(ListView):
                 {
                     "id": ad.id,
                     "name": ad.name,
-                    "author": ad.author_id,
+                    "author_id": ad.author_id,
                 }
             )
 
@@ -126,7 +147,7 @@ class AdDetailView(DetailView):
             {
                 "id": ad.id,
                 "name": ad.name,
-                "author": ad.author_id,
+                "author_id": ad.author_id,
                 "price": ad.price,
                 "description": ad.description,
                 "category": ad.category_id,
@@ -143,7 +164,7 @@ class AdCreateView(CreateView):
     def post(self, request, *args, **kwargs):
         ads_data = json.loads(request.body)
 
-        author = get_object_or_404(User, pk=ads_data["author_id"])
+        author_id = get_object_or_404(User, pk=ads_data["author_id"])
         category = get_object_or_404(Category, ads_data["category_id"])
 
         ads = Advertisement.objects.create(
@@ -161,7 +182,7 @@ class AdCreateView(CreateView):
             {
                 "id": ads.id,
                 "name": ads.name,
-                "author": ads.author_id,
+                "author_id": ads.author_id,
                 "price": ads.price,
                 "description": ads.description,
                 "category": ads.category_id,
@@ -231,7 +252,7 @@ class ImageUpdateView(UpdateView):
             "id":  self.object.id,
             "name":  self.object.name,
             "author_id":  self.object.author_id,
-            "author":  list(map(str, self.object.author.all())),
+            "author":  list(map(str, self.object.author_id.all())),
             "price":  self.object.price,
             "description":  self.object.description,
             "is_published":  self.object.is_published,

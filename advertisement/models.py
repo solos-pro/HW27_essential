@@ -17,10 +17,9 @@ class Category(models.Model):
 class Advertisement(models.Model):
     name = models.CharField(max_length=50)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
-    # author = models.CharField(max_length=20)
     price = models.PositiveSmallIntegerField(null=False)
     description = models.CharField(max_length=1000, default="None")
-    address = models.CharField(max_length=1000)
+    # address = models.CharField(max_length=1000)
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to="advertisements/", null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=False)

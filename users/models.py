@@ -27,7 +27,7 @@ class User(models.Model):
     password = models.CharField(max_length=128)
     role = models.CharField(max_length=9, choices=ROLES, default="member")
     age = models.PositiveSmallIntegerField(null=True)
-    locations = models.ManyToManyField(Location, null=True)
+    locations = models.ForeignKey(Location, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.username

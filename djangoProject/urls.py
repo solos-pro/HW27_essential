@@ -17,13 +17,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from advertisement.views import AdDetailView, AdsView, CatListView, CatDetailView, InitDB
+from advertisement.views import AdDetailView, AdsView, CatListView, CatDetailView, \
+    InitLocations, InitCategories, InitUsers, InitAdvertisement
 # from advertisement import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path ('cat/', CatListView.as_view()),
-    path ('add/', InitDB.as_view()),
+    path ('init/location/', InitLocations.as_view()),
+    path ('init/ads/', InitAdvertisement.as_view()),
+    path ('init/categories/', InitCategories.as_view()),
+    path ('init/users/', InitUsers.as_view()),
     path ('cat/<int:pk>', CatDetailView.as_view()),
     path ('ad/', AdsView.as_view()),
     path ('ad/<int:pk>', AdDetailView.as_view()),
