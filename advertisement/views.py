@@ -154,6 +154,7 @@ class AdDetailView(DetailView):
                 "image": ad.image.url if ad.image else None,
                 "is_published": ad.is_published,
             }, status=200, safe=False)
+        # return JsonResponse({"status": "ok"}, status=200, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
