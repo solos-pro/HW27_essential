@@ -1,10 +1,11 @@
-from django.contrib import admin
 from django.urls import path
+from advertisement.views import AdsView, AdDetailView, AdCreateView, AdUpdateView, AdDeleteView
 
-# urlpatterns = [
-#     # path('admin/', admin.site.urls),
-#     path ('cat/', CategoryView.as_view () ),
-#     path ('cat/<int:pk>', views.CategoryView.as_view () ),
-#     path ('ad/', views.AdView.as_view () ),
-#     path ('ad/<int:pk>', views.AdDetailView.as_view () ),
-# ]
+urlpatterns = [
+    path('', AdsView.as_view()),
+    path('<int:pk>/', AdsView.as_view()),
+    path('<int:pk>/', AdDetailView.as_view()),
+    path('create/', AdCreateView.as_view()),
+    path('<int:pk>/', AdUpdateView.as_view()),
+    path('<int:pk>/', AdDeleteView.as_view()),
+]

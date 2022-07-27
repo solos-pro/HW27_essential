@@ -148,9 +148,11 @@ class AdDetailView(DetailView):
                 "id": ad.id,
                 "name": ad.name,
                 "author_id": ad.author_id,
+                # "author": ad.author_id,
                 "price": ad.price,
                 "description": ad.description,
-                "category": ad.category_id,
+                "category_id": ad.category_id,
+                # "category": ad.get(name="name"),
                 "image": ad.image.url if ad.image else None,
                 "is_published": ad.is_published,
             }, status=200, safe=False)
