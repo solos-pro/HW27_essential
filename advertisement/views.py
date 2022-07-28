@@ -324,7 +324,7 @@ class CatUpdateView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
-        cat_data = json.loads(request, *args, **kwargs)
+        cat_data = json.loads(request.body)
 
         cat = self.object
         cat.name = cat_data["name"]
@@ -341,9 +341,9 @@ class CatUpdateView(UpdateView):
 @method_decorator(csrf_exempt, name='dispatch')
 class CatDeleteView(DeleteView):
     model = Category
-    success_url = "delete/"
+    success_url = "/"
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
 
-        return JsonResponse({"status": "OK"}, status=200)
+        return JsonResponse({"status": "deleted"}, status=200)

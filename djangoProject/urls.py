@@ -17,18 +17,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from advertisement.views import \
-    CatListView, CatDetailView,\
-    InitLocations, InitCategories, InitUsers, InitAdvertisement
+# from advertisement.views import
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path ('init/location/', InitLocations.as_view()),
-    path ('init/ads/', InitAdvertisement.as_view()),
-    path ('init/categories/', InitCategories.as_view()),
-    path ('init/users/', InitUsers.as_view()),
-    path ('cat/', CatListView.as_view()),
-    path ('cat/<int:pk>/', CatDetailView.as_view()),
-    path ('ad/', include('advertisement.urls')),
+    path ('', include('advertisement.urls')),
     path('users/', include('users.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

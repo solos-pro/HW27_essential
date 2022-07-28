@@ -115,21 +115,21 @@ class UserUpdateView(UpdateView):
                 "name": user.username,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                "role": list(map(str, user.groups.all())),
-                "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
-                "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
+                # "role": list(map(str, user.groups.all())),
+                # "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
+                # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
             }, status=200, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserDeleteView(DeleteView):
     model = User
-    success_url = "delete/"
+    success_url = "/"
 
     def delete(self, request, *args, **kwargs):
         super().delete(request, *args, **kwargs)
 
-        return JsonResponse({"status": "OK"}, status=200)
+        return JsonResponse({"status": "deleted"}, status=200)
 
 
 class UserAdsView(View):

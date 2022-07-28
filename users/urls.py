@@ -9,5 +9,5 @@ urlpatterns = [
     path('create/', UserCreateView.as_view()),
     path('<int:pk>/update/', UserUpdateView.as_view()),
     path('<int:pk>/delete/', UserDeleteView.as_view()),
-    path('<int:pk>/z/', UserAdsView.as_view()),
+    path('<int:pk>/image_up/', UserAdsView.as_view()),
 ]
