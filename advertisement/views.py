@@ -156,7 +156,6 @@ class AdDetailView(DetailView):
                 "image": ad.image.url if ad.image else None,
                 "is_published": ad.is_published,
             }, status=200, safe=False)
-        # return JsonResponse({"status": "ok"}, status=200, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -168,7 +167,7 @@ class AdCreateView(CreateView):
         ads_data = json.loads(request.body)
 
         author_id = get_object_or_404(User, pk=ads_data["author_id"])
-        category = get_object_or_404(Category, ads_data["category_id"])
+        category = get_object_or_404(Category, pk=ads_data["category_id"])
 
         ads = Advertisement.objects.create(
             name=ads_data["name"],
