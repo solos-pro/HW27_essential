@@ -21,7 +21,7 @@ class Advertisement(models.Model):
     description = models.CharField(max_length=1000, default="None")
     # address = models.CharField(max_length=1000)
     is_published = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="advertisements/", null=True, blank=True)
+    image = models.ImageField(upload_to="advertisements/", null=True, blank=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=False)
 
     def __str__(self):
