@@ -21,7 +21,7 @@ class UserListView(ListView):
         super().get(request, *args, **kwargs)
 
         # self.object_list = self.object_list.order_by("username")
-        self.object_list = self.object_list.annotate(ads_count=Count('username'))
+        self.object_list = self.object_list.annotate(ads_count=Count('username')).order_by("username")
 
         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
         page_number = request.GET.get("page")
@@ -39,7 +39,6 @@ class UserListView(ListView):
                     "age": user.age,
                     "role": user.role,
                     "location": list(Location.objects.all().filter(user=user.id).values_list("name", flat=True)),
-                    # "count_ad": Advertisement.objects.annotate(Count(User.objects.all().filter(username=user.username))) #  TODO: How to count quantity of advertisements created by user
                     "ads_count": user.ads_count,
                 }
             )

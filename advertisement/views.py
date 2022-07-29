@@ -124,6 +124,7 @@ class AdsView(ListView):
                     "id": ad.id,
                     "name": ad.name,
                     "author_id": ad.author_id,
+                    "price": ad.price,
                 }
             )
 
