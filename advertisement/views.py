@@ -1,5 +1,4 @@
 import pandas as pandas
-# from django.contrib.auth.models import User
 from users.models import User, Location
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -90,7 +89,6 @@ class InitAdvertisement(View):
                 author_id=data_ads["author_id"][i],
                 price=data_ads["price"][i],
                 description=data_ads["description"][i],
-                # address=data_ads["address"][i],
                 is_published=data_ads["is_published"][i],
                 image=data_ads["image"][i],
                 category_id=data_ads["category_id"][i],

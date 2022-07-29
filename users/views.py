@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ListView
 
 from djangoProject import settings
-from users.models import User
+from users.models import User, Location
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -34,9 +34,9 @@ class UserListView(ListView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "username": user.username,
-                    # "role": list(map(str, user.role.all())),
-                    # "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
-                    # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
+                    "age": user.age,
+                    "role": user.role,
+                    "location": list(Location.objects.all().filter(user=user.id).values_list("name", flat=True)),
                 }
             )
 
@@ -60,8 +60,8 @@ class UserDetailView(DetailView):
                 "name": user.username,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                # "role": list(map(str, user.groups.all())),
-                # "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
+                "age": user.age,
+                "role": user.role,
                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
             }, status=200, safe=False)
 
@@ -86,8 +86,8 @@ class UserCreateView(CreateView):
                 "name": user.username,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                # "role": list(map(str, user.groups.all())),
-                # "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
+                "age": user.age,
+                "role": user.role,
                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
             }, status=200, safe=False)
 
@@ -115,8 +115,8 @@ class UserUpdateView(UpdateView):
                 "name": user.username,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
-                # "role": list(map(str, user.groups.all())),
-                # "age": list(User.objects.all().filter(user=user.id).values_list("age", flat=True)),
+                "age": user.age,
+                "role": user.role,
                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
             }, status=200, safe=False)
 
