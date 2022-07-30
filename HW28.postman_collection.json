@@ -1,10 +1,103 @@
 {
 	"info": {
-		"_postman_id": "aeb59c0f-84f5-4be9-9fbb-72e69c20b1c5",
+		"_postman_id": "7e3f1183-c7bf-4ef8-b3f9-91f4062cfc87",
 		"name": "HW28",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18742550"
 	},
 	"item": [
+		{
+			"name": "Init_locations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/init/location/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"init",
+						"location",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Init_Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/init/categories/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"init",
+						"categories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Init_Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/init/users/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"init",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Init_Advertisement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/init/ads/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"init",
+						"ads",
+						""
+					]
+				}
+			},
+			"response": []
+		},
 		{
 			"name": "Category_List",
 			"request": {
@@ -269,15 +362,6 @@
 			"response": []
 		},
 		{
-			"name": "Init DB",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": null
-			},
-			"response": []
-		},
-		{
 			"name": "Advertisement_List",
 			"request": {
 				"method": "GET",
@@ -403,7 +487,7 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:8000/users/11/delete/",
+					"raw": "127.0.0.1:8000/ad/21/delete/",
 					"host": [
 						"127",
 						"0",
@@ -412,8 +496,8 @@
 					],
 					"port": "8000",
 					"path": [
-						"users",
-						"11",
+						"ad",
+						"21",
 						"delete",
 						""
 					]

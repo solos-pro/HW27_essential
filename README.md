@@ -16,7 +16,15 @@
     Необходимо ввести команду:<br>
     `sudo usermod -a -G docker $USER`<br>
     To apply the new group membership, log out of the server and back in, or type the following:<br>
-    `su - ${USER}`
+    `su - ${USER}`<br>
+3. Узнать ID созданного docker-образа:<br>
+    `docker ps`<br>
+4. Запуск данного docker-образа:<br>
+    `docker start <ID>`
+5. Накатываем миграции:<br>
+    `./manage.py makemigrations`<br>
+    `./manage.py migrate`
+
 
 # Проверка ДЗ
 Для проверки удобно использовать postman-запросы. Поэтому прикрепил файл в корень прокта ["HW28.postman_collection.json"](HW28.postman_collection.json), который можно импортировать в postman.\
