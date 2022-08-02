@@ -33,3 +33,8 @@
   + категории, 
   + пользователи,
   + объявления.
+<br><br>
+
+**createsuperuser**
+  + login:
+  + password:
