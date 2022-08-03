@@ -11,6 +11,7 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView,
 from djangoProject import settings
 from advertisement.models import Advertisement
 from users.models import User, Location
+from users.serializers import LocationsSerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -162,4 +163,31 @@ class UserAdsView(View):
         }
 
         return JsonResponse(response, safe=False)
+
+# ---------------------------------------------------------------------------------
+
+@method_decorator(csrf_exempt, name='dispatch')
+class LocationView(ListView):
+    model = Location
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+
+        # self.object_list = self.object_list.annotate(ads_count=Count('username')).order_by("username")
+        self.object_list = self.object_list.all()
+
+        paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        list(map(lambda x: setattr(x, "name", x.name), page_obj))
+
+        response = {
+            "items": LocationsSerializer(page_obj, many=True).data,
+            "num_pages": paginator.num_pages,
+            "total": paginator.count,
+        }
+        return JsonResponse(response, status=200, safe=False)
+
+
 
