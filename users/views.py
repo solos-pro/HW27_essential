@@ -12,6 +12,7 @@ from djangoProject import settings
 from advertisement.models import Advertisement
 from users.models import User, Location
 from users.serializers import LocationsSerializer
+from rest_framework.viewsets import ModelViewSet
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -166,6 +167,7 @@ class UserAdsView(View):
 
 # ---------------------------------------------------------------------------------
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class LocationView(ListView):
     model = Location
@@ -190,4 +192,7 @@ class LocationView(ListView):
         return JsonResponse(response, status=200, safe=False)
 
 
+class LocationsViewSet(ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationsSerializer
 

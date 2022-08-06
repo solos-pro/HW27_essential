@@ -12,6 +12,8 @@ import json
 import os
 
 from djangoProject import settings
+from advertisement.serializers import AdvertisementsSerializer, CategoriesSerializer
+from rest_framework.viewsets import ModelViewSet
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 FILE1: str = os.path.join(BASE_DIR, 'new_location.csv')

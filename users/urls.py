@@ -1,9 +1,12 @@
 from django.urls import path
-
-
+from rest_framework import routers
 from users.views import \
     UserListView, UserDetailView, UserCreateView, UserUpdateView, UserDeleteView, UserAdsView, \
-    LocationView
+    LocationView, LocationsViewSet
+
+router = routers.SimpleRouter()
+router.register('location_set', LocationsViewSet)
+
 
 urlpatterns = [
     path('', UserListView.as_view()),
@@ -14,3 +17,5 @@ urlpatterns = [
     path('<int:pk>/image_up/', UserAdsView.as_view()),
     path('locations/', LocationView.as_view())
 ]
+
+urlpatterns += router.urls
