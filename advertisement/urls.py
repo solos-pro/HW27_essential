@@ -1,8 +1,14 @@
 from django.urls import path
+from rest_framework import routers
+
 from advertisement.views import \
     InitLocations, InitCategories, InitUsers, InitAdvertisement, \
     AdsView, AdDetailView, AdCreateView, AdUpdateView, AdDeleteView,\
-    CatListView, CatDetailView, CatCreateView, CatUpdateView, CatDeleteView
+    CatListView, CatDetailView, CatCreateView, CatUpdateView, CatDeleteView, \
+    AdvertisementViewSet
+
+router = routers.SimpleRouter()
+router.register('ads_set', AdvertisementViewSet)
 
 urlpatterns = [
     path('init/location/', InitLocations.as_view()),
@@ -22,3 +28,5 @@ urlpatterns = [
     path('cat/<int:pk>/update/', CatUpdateView.as_view()),
     path('cat/<int:pk>/delete/', CatDeleteView.as_view()),
 ]
+
+urlpatterns += router.urls

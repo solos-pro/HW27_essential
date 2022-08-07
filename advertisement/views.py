@@ -8,6 +8,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from advertisement.models import Advertisement, Category
+from django.db.models import Q, F
 import json
 import os
 
@@ -21,6 +22,10 @@ FILE2: str = os.path.join(BASE_DIR, 'new_categories.csv')
 FILE3: str = os.path.join(BASE_DIR, 'new_user.csv')
 FILE4: str = os.path.join(BASE_DIR, 'new_ads.csv')
 
+
+# ---------------------------------------------------------------
+# The beginning of an init-block
+# ---------------------------------------------------------------
 
 @method_decorator(csrf_exempt, name='dispatch')
 class InitLocations(View):
@@ -104,6 +109,15 @@ class InitAdvertisement(View):
 class AdDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         return JsonResponse(200, {"status": "ok"})
+
+# ---------------------------------------------------------------
+# The End of the init-block
+# ---------------------------------------------------------------
+
+
+class AdvertisementViewSet(ModelViewSet):
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementsSerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')
