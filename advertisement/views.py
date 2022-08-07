@@ -1,4 +1,6 @@
 import pandas as pandas
+from rest_framework.generics import ListAPIView
+
 from users.models import User, Location
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -118,6 +120,60 @@ class AdDetailView(DetailView):
 class AdvertisementViewSet(ModelViewSet):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementsSerializer
+
+    """
+    def get(self, request, *args, **kwargs):
+        categories_list = request.GET.getlist("cat", None)
+
+        if categories_list:
+            self.queryset = self.queryset.filter(category__in=categories_list)
+
+        ads_q = None
+
+
+        for category_id in categories_list:
+            if not ads_q:
+                ads_q = Q(category_id__exact=category_id)
+            else:
+                ads_q |= Q(category_id__exact=category_id)
+        if ads_q:
+            self.queryset = self.queryset.filter(ads_q)
+
+        ad_text = request.GET.get('text', None)
+        if ad_text:
+            self.queryset = self.queryset.filter(
+                name__icontains=ad_text
+            )
+
+        return super().get(request, *args, **kwargs)
+
+
+"""
+    def list(self, request, *args, **kwargs):
+        adv_cat = request.GET.get('cat', None)
+        adv_text = request.GET.get('text', None)
+        adv_local = request.GET.get('location', None)
+        adv_price_to = request.GET.get('price_to', None)
+        adv_price_from = request.GET.get('price_from', None)
+
+        if adv_cat:
+            self.queryset = self.queryset.filter(
+                category__in=adv_cat
+            )
+        if adv_text:
+            self.queryset = self.queryset.filter(
+                description__icontains=adv_text
+            )
+        if adv_local:
+            self.queryset = self.queryset.filter(
+                loca
+            )
+        if adv_price_to and adv_price_from:
+            self.queryset = self.queryset.filter(
+                price__lte=adv_price_to,
+                price__gte=adv_price_from
+            )
+        return super().list(request, *args, **kwargs)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
