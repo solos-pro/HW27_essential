@@ -149,17 +149,13 @@ class AdvertisementViewSet(ModelViewSet):
 
 
 """
-    def list(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         adv_cats = request.GET.getlist('cat', None)
         adv_text = request.GET.get('text', None)
         adv_local = request.GET.get('location', None)
         adv_price_to = request.GET.get('price_to', None)
         adv_price_from = request.GET.get('price_from', None)
 
-        # if adv_cat:
-        #     self.queryset = self.queryset.filter(
-        #         category__in=adv_cat
-        #     )
         adv_cats_q = None
         for adv_cat in adv_cats:
             if adv_cats_q is None:
@@ -181,7 +177,7 @@ class AdvertisementViewSet(ModelViewSet):
                 price__lte=adv_price_to,
                 price__gte=adv_price_from
             )
-        return super().list(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
