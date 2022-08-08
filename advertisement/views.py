@@ -150,16 +150,24 @@ class AdvertisementViewSet(ModelViewSet):
 
 """
     def list(self, request, *args, **kwargs):
-        adv_cat = request.GET.get('cat', None)
+        adv_cats = request.GET.getlist('cat', None)
         adv_text = request.GET.get('text', None)
         adv_local = request.GET.get('location', None)
         adv_price_to = request.GET.get('price_to', None)
         adv_price_from = request.GET.get('price_from', None)
 
-        if adv_cat:
-            self.queryset = self.queryset.filter(
-                category__in=adv_cat
-            )
+        # if adv_cat:
+        #     self.queryset = self.queryset.filter(
+        #         category__in=adv_cat
+        #     )
+        adv_cats_q = None
+        for adv_cat in adv_cats:
+            if adv_cats_q is None:
+                adv_cats_q = Q(category__in=adv_cat)
+            else:
+                adv_cats_q |= Q(category__in=adv_cat)
+        self.queryset = self.queryset.filter(adv_cats_q)
+
         if adv_text:
             self.queryset = self.queryset.filter(
                 description__icontains=adv_text
