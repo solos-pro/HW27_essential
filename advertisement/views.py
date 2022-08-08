@@ -166,7 +166,7 @@ class AdvertisementViewSet(ModelViewSet):
             )
         if adv_local:
             self.queryset = self.queryset.filter(
-                loca
+                author__locations__name__icontains=adv_local
             )
         if adv_price_to and adv_price_from:
             self.queryset = self.queryset.filter(
