@@ -12,11 +12,12 @@ class CategoriesSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementsSerializer(serializers.ModelSerializer):
-    location = LocationsSerializer(read_only=True)
-    category = CategoriesSerializer(read_only=True)
-    author = UsersSerializer(read_only=True)
+    # location = LocationsSerializer(read_only=True)
+    # category = CategoriesSerializer(read_only=True)
+    # author = UsersSerializer(read_only=True)
 
     class Meta:
         model = Advertisement
-        # fields = '__all__'
-        fields = ['name', 'author', 'price', 'description', 'category', 'location']
+        fields = '__all__'
+        # fields = ['name', 'author', 'price', 'description', 'category', 'location']
+

@@ -24,6 +24,8 @@ class Advertisement(models.Model):
     image = models.ImageField(upload_to="advertisements/", null=True, blank=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=False)
 
+    ordering = ['id']
+
     def __str__(self):
         return self.name
 
