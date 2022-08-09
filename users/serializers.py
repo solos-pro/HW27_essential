@@ -10,6 +10,8 @@ class LocationsSerializer(serializers.ModelSerializer):
 
 
 class UsersSerializer(serializers.ModelSerializer):
+    locations = LocationsSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['username', 'locations']
