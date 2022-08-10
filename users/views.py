@@ -12,7 +12,7 @@ from advertisement.models import Advertisement
 from users.models import User, Location
 from users.serializers import LocationsSerializer, UsersSerializer, UserSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, CreateAPIView, DestroyAPIView
 
 
 class UserListView(ListAPIView):
@@ -143,15 +143,20 @@ class UserUpdateView(UpdateAPIView):
 #             }, status=200, safe=False)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UserDeleteView(DeleteView):
-    model = User
-    success_url = "/"
 
-    def delete(self, request, *args, **kwargs):
-        super().delete(request, *args, **kwargs)
+class UserDeleteView(DestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-        return JsonResponse({"status": "deleted"}, status=200)
+# @method_decorator(csrf_exempt, name='dispatch')
+# class UserDeleteView(DeleteView):
+#     model = User
+#     success_url = "/"
+#
+#     def delete(self, request, *args, **kwargs):
+#         super().delete(request, *args, **kwargs)
+#
+#         return JsonResponse({"status": "deleted"}, status=200)
 
 
 class UserAdsView(View):
