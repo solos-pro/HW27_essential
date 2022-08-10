@@ -12,7 +12,7 @@ from advertisement.models import Advertisement
 from users.models import User, Location
 from users.serializers import LocationsSerializer, UsersSerializer, UserSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, CreateAPIView
 
 
 class UserListView(ListAPIView):
@@ -60,7 +60,7 @@ class UserListView(ListAPIView):
 class UserDetailView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-	# lookup_field = 'slug_field'
+    # lookup_field = 'slug_field'
 
 # @method_decorator(csrf_exempt, name="dispatch")
 # class UserDetailView(DetailView):
@@ -80,30 +80,34 @@ class UserDetailView(RetrieveAPIView):
 #             }, status=200, safe=False)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UserCreateView(CreateView):
-    model = User
-    fields = ["username", "first_name", "last_name"]
+class UserCreateView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def post(self, request, *args, **kwargs):
-        user_data = json.loads(request.body)
-
-        user = User.objects.create(
-            username=user_data["username"],
-            first_name=user_data["first_name"],
-            last_name=user_data["last_name"],
-        )
-
-        return JsonResponse(
-            {
-                "id": user.id,
-                "name": user.username,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "age": user.age,
-                "role": user.role,
-                # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
-            }, status=200, safe=False)
+# @method_decorator(csrf_exempt, name='dispatch')
+# class UserCreateView(CreateView):
+#     model = User
+#     fields = ["username", "first_name", "last_name"]
+#
+#     def post(self, request, *args, **kwargs):
+#         user_data = json.loads(request.body)
+#
+#         user = User.objects.create(
+#             username=user_data["username"],
+#             first_name=user_data["first_name"],
+#             last_name=user_data["last_name"],
+#         )
+#
+#         return JsonResponse(
+#             {
+#                 "id": user.id,
+#                 "name": user.username,
+#                 "first_name": user.first_name,
+#                 "last_name": user.last_name,
+#                 "age": user.age,
+#                 "role": user.role,
+#                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
+#             }, status=200, safe=False)
 
 
 class UserUpdateView(UpdateAPIView):
