@@ -1,13 +1,12 @@
 {
 	"info": {
-		"_postman_id": "7e3f1183-c7bf-4ef8-b3f9-91f4062cfc87",
-		"name": "HW28",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18742550"
+		"_postman_id": "c3e640fb-c7e9-4300-a1c4-6627d4d125e1",
+		"name": "HW29",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Init_locations",
+			"name": "DB Init Locations",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -30,7 +29,7 @@
 			"response": []
 		},
 		{
-			"name": "Init_Categories",
+			"name": "DB Init Categories",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -53,7 +52,7 @@
 			"response": []
 		},
 		{
-			"name": "Init_Users",
+			"name": "DB Init Users",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -76,7 +75,7 @@
 			"response": []
 		},
 		{
-			"name": "Init_Advertisement",
+			"name": "DB Init Advertisement",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -92,6 +91,29 @@
 					"path": [
 						"init",
 						"ads",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Locations (ViewSet)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/users/location_set/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"location_set",
 						""
 					]
 				}
@@ -247,7 +269,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/users/",
+					"raw": "127.0.0.1:8000/users/?page=1",
 					"host": [
 						"127",
 						"0",
@@ -257,6 +279,35 @@
 					"port": "8000",
 					"path": [
 						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User_Detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/users/1/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"1",
 						""
 					]
 				}
@@ -270,7 +321,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\":\"Name2\", \"first_name\":\"Se \", \"last_name\":\"ah-ah\"}",
+					"raw": "{\"username\":\"nickname\", \"first_name\":\"Gans \", \"last_name\":\"Chrst\", \"password\": \"abc\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -298,11 +349,11 @@
 		{
 			"name": "User_Update",
 			"request": {
-				"method": "POST",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\":\"Name_Updated\", \"first_name\":\"Se \", \"last_name\":\"ah-ah\"}",
+					"raw": "{\"username\":\"Name_Update\", \"first_name\":\"Se \", \"last_name\":\"Mi-Mi\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -367,7 +418,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/users/12/",
+					"raw": "127.0.0.1:8000/ad/",
 					"host": [
 						"127",
 						"0",
@@ -376,9 +427,68 @@
 					],
 					"port": "8000",
 					"path": [
-						"users",
-						"12",
+						"ad",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Advertisement (ViewSet) Categories-filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/ads_set/?cat=1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"ads_set",
+						""
+					],
+					"query": [
+						{
+							"key": "cat",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Advertisement (ViewSet) description-filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:8000/ads_set/?text=Коте&cat=1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"ads_set",
+						""
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "Коте"
+						},
+						{
+							"key": "cat",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -390,7 +500,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/ad/51/",
+					"raw": "127.0.0.1:8000/ad/62/",
 					"host": [
 						"127",
 						"0",
@@ -400,7 +510,7 @@
 					"port": "8000",
 					"path": [
 						"ad",
-						"51",
+						"62",
 						""
 					]
 				}
@@ -487,7 +597,7 @@
 					}
 				},
 				"url": {
-					"raw": "127.0.0.1:8000/ad/21/delete/",
+					"raw": "127.0.0.1:8000/ad/63/delete/",
 					"host": [
 						"127",
 						"0",
@@ -497,7 +607,7 @@
 					"port": "8000",
 					"path": [
 						"ad",
-						"21",
+						"63",
 						"delete",
 						""
 					]

@@ -25,9 +25,17 @@
     `./manage.py makemigrations`<br>
     `./manage.py migrate`
 
+# Критерии выполнения:
 
+- [ ]  Работа с пользователями реализованая через GenericView из DRF - ListApiView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+- [ ]  При выводе списка пользователей используется встроенная пагинация DRF
+- [ ]  API для модели Location реализовано с использованием ViewSet и Router
+- [ ]  В проекте используются Serializers
+- [ ]  Все фильтры выполнены с использованием lookup's
+- [ ]  Типы данных в JSON отдаются корректно
+- [ ]  Методы из спецификации работают
 # Проверка ДЗ
-Для проверки удобно использовать postman-запросы. Поэтому прикрепил файл в корень прокта ["HW28.postman_collection.json"](HW28.postman_collection.json), который можно импортировать в postman.\
+Для проверки удобно использовать postman-запросы. Поэтому прикрепил файл в корень прокта ["HW29.postman_collection.json"](HW29.postman_collection.json), который можно импортировать в postman.\
 Инициализация БД в том порядке, в котором они расположены в postman списке: 
   + локации, 
   + категории, 
@@ -36,5 +44,5 @@
 <br><br>
 
 **createsuperuser**
-  + login:
-  + password:
+  + login: django
+  + password: django
