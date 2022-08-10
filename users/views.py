@@ -12,7 +12,7 @@ from advertisement.models import Advertisement
 from users.models import User, Location
 from users.serializers import LocationsSerializer, UsersSerializer, UserSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView
 
 
 class UserListView(ListAPIView):
@@ -106,33 +106,37 @@ class UserCreateView(CreateView):
             }, status=200, safe=False)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UserUpdateView(UpdateView):
-    model = User
-    fields = ["username", "first_name", "last_name"]
+class UserUpdateView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def post(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-
-        user_data = json.loads(request.body)
-
-        user = self.object
-        user.username = user_data["username"]
-        user.first_name = user_data["first_name"]
-        user.last_name = user_data["last_name"]
-
-        user.save()
-
-        return JsonResponse(
-            {
-                "id": user.id,
-                "name": user.username,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "age": user.age,
-                "role": user.role,
-                # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
-            }, status=200, safe=False)
+# @method_decorator(csrf_exempt, name='dispatch')
+# class UserUpdateView(UpdateView):
+#     model = User
+#     fields = ["username", "first_name", "last_name"]
+#
+#     def post(self, request, *args, **kwargs):
+#         super().post(request, *args, **kwargs)
+#
+#         user_data = json.loads(request.body)
+#
+#         user = self.object
+#         user.username = user_data["username"]
+#         user.first_name = user_data["first_name"]
+#         user.last_name = user_data["last_name"]
+#
+#         user.save()
+#
+#         return JsonResponse(
+#             {
+#                 "id": user.id,
+#                 "name": user.username,
+#                 "first_name": user.first_name,
+#                 "last_name": user.last_name,
+#                 "age": user.age,
+#                 "role": user.role,
+#                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
+#             }, status=200, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
