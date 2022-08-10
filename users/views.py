@@ -7,68 +7,77 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ListView
-
 from djangoProject import settings
 from advertisement.models import Advertisement
 from users.models import User, Location
-from users.serializers import LocationsSerializer
+from users.serializers import LocationsSerializer, UsersSerializer, UserSerializer
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class UserListView(ListView):
-    model = User
+class UserListView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UsersSerializer
 
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
+# @method_decorator(csrf_exempt, name='dispatch')
+# class UserListView(ListView):
+#     model = User
+#
+#     def get(self, request, *args, **kwargs):
+#         super().get(request, *args, **kwargs)
+#
+#         # self.object_list = self.object_list.order_by("username")
+#         self.object_list = self.object_list.annotate(ads_count=Count('username')).order_by("username")
+#
+#         paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
+#         page_number = request.GET.get("page")
+#         page_obj = paginator.get_page(page_number)
+#
+#         advertisements = []
+#
+#         for user in page_obj:
+#             advertisements.append(
+#                 {
+#                     "id": user.id,
+#                     "first_name": user.first_name,
+#                     "last_name": user.last_name,
+#                     "username": user.username,
+#                     "age": user.age,
+#                     "role": user.role,
+#                     "location": list(Location.objects.all().filter(user=user.id).values_list("name", flat=True)),
+#                     "ads_count": user.ads_count,
+#                 }
+#             )
+#
+#         response = {
+#             "items": advertisements,
+#             "num_pages": paginator.num_pages,
+#             "total": paginator.count,
+#         }
+#         return JsonResponse(response, status=200, safe=False)
 
-        # self.object_list = self.object_list.order_by("username")
-        self.object_list = self.object_list.annotate(ads_count=Count('username')).order_by("username")
 
-        paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+class UserDetailView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+	# lookup_field = 'slug_field'
 
-        advertisements = []
-
-        for user in page_obj:
-            advertisements.append(
-                {
-                    "id": user.id,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "username": user.username,
-                    "age": user.age,
-                    "role": user.role,
-                    "location": list(Location.objects.all().filter(user=user.id).values_list("name", flat=True)),
-                    "ads_count": user.ads_count,
-                }
-            )
-
-        response = {
-            "items": advertisements,
-            "num_pages": paginator.num_pages,
-            "total": paginator.count,
-        }
-        return JsonResponse(response, status=200, safe=False)
-
-
-@method_decorator(csrf_exempt, name="dispatch")
-class UserDetailView(DetailView):
-    model = User
-
-    def get(self, request, *args, **kwargs):
-        user = self.get_object()
-        return JsonResponse(
-            {
-                "id": user.id,
-                "name": user.username,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "age": user.age,
-                "role": user.role,
-                # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
-            }, status=200, safe=False)
+# @method_decorator(csrf_exempt, name="dispatch")
+# class UserDetailView(DetailView):
+#     model = User
+#
+#     def get(self, request, *args, **kwargs):
+#         user = self.get_object()
+#         return JsonResponse(
+#             {
+#                 "id": user.id,
+#                 "name": user.username,
+#                 "first_name": user.first_name,
+#                 "last_name": user.last_name,
+#                 "age": user.age,
+#                 "role": user.role,
+#                 # "location": list(User.objects.all().filter(user=user.id).values_list("location_name", flat=True)),
+#             }, status=200, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')

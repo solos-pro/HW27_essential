@@ -15,3 +15,11 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'locations']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    locations = LocationsSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'
