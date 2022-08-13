@@ -121,7 +121,7 @@ class AdvertisementViewSet(ModelViewSet):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementsSerializer
 
-    def get(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         adv_cats = request.GET.getlist('cat', None)
         adv_text = request.GET.get('text', None)
         adv_location = request.GET.get('location', None)
@@ -149,7 +149,7 @@ class AdvertisementViewSet(ModelViewSet):
                 price__lte=adv_price_to,
                 price__gte=adv_price_from
             )
-        return super().get(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
