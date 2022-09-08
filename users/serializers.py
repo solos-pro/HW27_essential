@@ -23,3 +23,19 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+
+class CreateUserSerializer(serializers.ModelSerializer):
+    locations = LocationsSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def create(self, validated_data):
+        user = User.objects.create(**validated_data)
+
+        user.set_password(validated_data["password"])
+        user.save()
+
+        return user

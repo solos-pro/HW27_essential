@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -14,17 +15,17 @@ class Location(models.Model):
         verbose_name_plural = "Координаты"
 
 
-class User(models.Model):
+class User(AbstractUser):
     ROLES = [
         ("member", "Пользователь"),
         ("moderator", "Модератор"),
         ("admin", "Админ")
     ]
 
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=30, null=True)
-    username = models.CharField(max_length=20)
-    password = models.CharField(max_length=128)
+    # first_name = models.CharField(max_length=20)
+    # last_name = models.CharField(max_length=30, null=True)
+    # username = models.CharField(max_length=20)
+    # password = models.CharField(max_length=128)
     role = models.CharField(max_length=9, choices=ROLES, default="member")
     age = models.PositiveSmallIntegerField(null=True)
     locations = models.ForeignKey(Location, null=True, on_delete=models.CASCADE)
