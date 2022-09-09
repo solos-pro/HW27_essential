@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from advertisement.models import Advertisement, Category
 from django.db.models import Q, F
+from rest_framework.permissions import IsAuthenticated
 import json
 import os
 
